@@ -1,0 +1,14 @@
+:root{
+    --dark-grey:#2C3E50;
+    --yellow:#FFFF61;
+
+}
+
+@media  (min-width:992px){
+  .px-lg-5 {
+    padding:0 3rem 0 3rem !important;
+  }  
+}
+.bolder{
+    font-weight: bolder;
+}

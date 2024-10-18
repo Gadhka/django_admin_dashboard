@@ -1,0 +1,93 @@
+{%extends "global-admin/base.html"%}
+{%load i18n%}
+{%block title%}admin{%endblock%}
+{%block head%}
+<style>
+    p{
+        color: black !important;
+    }
+    .my-btn{
+        color: blue !important;
+        font-size: 20px;
+        font-weight: 700;
+        border: 1px rgb(255, 0, 0) solid;
+        border-radius: 30px;
+    }
+    .mylabel{
+        color: black;
+    }
+    textarea{
+        width: 100% !important;
+        min-height: 60px;
+        color: rgb(0, 0, 0);
+        background-color: #ffffff;
+    }
+    input{
+        width: 100%;
+        color: rgb(0, 0, 0);
+        background-color:#ffffffff;
+        
+    }
+</style>
+{%endblock%}
+{%block body%}
+<div class="navbar-view mt-1">
+    <button class="active-btn my-btn" style="background: transparent;">
+        X
+    </button>
+    <a href="{%url 'home'  %}" class="text-dark ml-3">Home</a> 
+    <span class="text-success fw-bolder" style="font-size: 20px;">></span> 
+    <a href="{%url 'model-view' model_name %}">{{model_name}}</a>
+
+</div>
+<h1 class="h1 text-capitalize">{{site_title}}</h1>
+<section class="row focus-contianer">
+    <div class="hidden-focus  col-lg-5 col-md-5 bg-light col-12 px-0 min-vh-100 bg-transparent">
+        <div class="px-1 py-2 ">
+            <a href="{%url 'home'%}" class="btn btn-success w-100 text-left">Models</a>
+        </div>
+        {%include 'global-admin/models.html' with all_models=models active=model_name %}
+    </div>
+    <div class="show-focus col-lg-7 col-md-7 col-12 text-light ">
+        
+        {% if form.is_multipart %}
+        <form enctype="multipart/form-data" method="POST">
+        {% else %}
+        <form method="POST">
+        {% endif %}
+            {% csrf_token %}
+            {{form.media}}
+            {%for field in form%}
+                <label class="mylabel">{{field.label}}</label>
+                {{field}}
+            {%endfor%}
+            <div class="mb-3 mt-3 ">
+                <button type="submit" class="btn-lg btn-outline-danger w-25">{%if update%} Update {%else%} Save {%endif%}</button>
+            </div>
+            
+                
+        </form>
+    </div>
+</section>
+
+{%endblock%}
+{%block script%}
+<script>
+    const active_btn = document.querySelector("button.my-btn");
+    const hideThis =document.querySelector("div.hidden-focus");
+    const showedThis = document.querySelector("div.show-focus");
+    active_btn.addEventListener("click",function(){
+        if (hideThis.classList.contains("d-none")) {
+            hideThis.classList.remove("d-none");
+            showedThis.classList.add("col-lg-7");
+            showedThis.classList.add("col-md-7");
+
+        }else{
+            hideThis.classList.add("d-none");
+            showedThis.classList.remove("col-lg-7");
+            showedThis.classList.remove("col-md-7");
+        }
+    });
+
+</script>
+{%endblock%}

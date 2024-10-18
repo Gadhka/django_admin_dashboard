@@ -1,0 +1,30 @@
+{%load i18n%}
+
+
+<div class="models min-vh-100" style="border: 2px rgb(255, 255, 255) solid;">
+    {%for model in all_models%}
+    {%if forloop.counter|divisibleby:2%}
+    <div class="d-flex justify-content-between py-1 px-2 mb-1"   style=" {%if model == active%} background-color: red {%else%} background-color: rgb(184, 184, 168); {%endif%} " >
+        <a href="{%url 'model-view' model%}" class="font-italic fw-bolder text-capitalize" style="color: rgb(55, 0, 255);font-weight: 700;font-size: 18px;">{{model}}</a>
+        <div class="d-flex justify-content-between text-center">
+            <div class="mr-4">
+                <a href="{%url 'create-new-model' model%}" class="font-italic fw-bolder text-capitalize" style="color: rgb(55, 0, 255);font-weight: 700;font-size: 18px;"><span class="text-center text-dark" style="font-weight: 700;font-size: 18px;">+</span> {%translate 'Add'%}
+                </a>
+            </div>
+       
+        </div>
+    </div>
+    {%else%}
+    <div class="d-flex justify-content-between py-1 px-2 mb-1" style=" {% if model == active %} background-color: red;  {%else%} background-color: transparent; {%endif%}">
+        <a href="{%url 'model-view' model%}" class="font-italic fw-bolder text-capitalize" style="color: rgb(55, 0, 255);font-weight: 700;font-size: 18px;">{{model}}</a>
+        <div class="d-flex justify-content-between text-center">
+            <div class="mr-4">
+                <a href="{%url 'create-new-model' model%}" class="font-italic fw-bolder text-capitalize" style="color: rgb(55, 0, 255);font-weight: 700;font-size: 18px;"><span class="text-center text-dark" style="font-weight: 700;font-size: 18px;">+</span> {%translate 'Add'%}
+                </a>
+                
+            </div>
+        </div>
+    </div>
+    {%endif%}
+    {%endfor%}
+</div>

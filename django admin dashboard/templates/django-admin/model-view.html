@@ -1,0 +1,75 @@
+{%extends "global-admin/base.html"%}
+{%load i18n%}
+{%block title%}admin{%endblock%}
+{%block head%}
+<style>
+    .my-btn{
+        color: blue !important;
+        font-size: 20px;
+        font-weight: 700;
+        border: 1px rgb(255, 0, 0) solid;
+        border-radius: 30px;
+    }
+</style>
+{%endblock%}
+{%block body%}
+<div class="navbar-view mt-1">
+    <button class="active-btn my-btn" style="background: transparent;">
+        X
+    </button>
+    <a href="{%url 'home'  %}" class="text-dark ml-3">Home</a> 
+    <span class="text-success fw-bolder" style="font-size: 20px;">></span> 
+    <a href="{%url 'model-view' model_name %}">{{model_name}}</a>
+
+</div>
+<h1 class="h1 text-capitalize">{{site_title}}</h1>
+<section class="row focus-contianer">
+    <div class="hidden-focus  col-lg-5 col-md-5 bg-light col-12 px-0 min-vh-100 bg-transparent">
+        <div class="px-1 py-2 ">
+            <a href="{%url 'home'%}" class="btn btn-success w-100 text-left">Models</a>
+        </div>
+        {%include 'global-admin/models.html' with all_models=models active=model_name %}
+    </div>
+    <div class="show-focus col-lg-7 col-md-7 col-12 text-light ">
+        <a href="{%url 'create-new-model' model_name%}" class="btn-lg btn-outline-info bg-dark mb-3">{%translate 'ADD'%} {{model_name}}</a>
+        <div class="mt-3 min-vh-100 " style="border: 2px rgb(255, 255, 255) solid;">
+            {%for model in selected_model%}
+            {%if forloop.counter|divisibleby:2%}
+            <div class="d-flex justify-content-between py-1 px-2 mb-1"   style="background-color: rgb(206, 199, 189); " >
+                <a href="{%url 'update-past-model' model_name model.id%}" class="w-100 font-italic fw-bolder text-capitalize" style="color: rgb(55, 0, 255);font-weight: 700;font-size: 18px;">{{model}}</a>
+                <a class="text-capitalize" href="{%url 'delete-this-model' model_name model.id %}">delete</a>
+            </div>
+            {%else%}
+            <div class="d-flex justify-content-between py-1 px-2 mb-1"   style="background-color: blanchedalmond; " >
+                <a href="{%url 'update-past-model' model_name model.id%}" class="w-100 font-italic fw-bolder text-capitalize" style="color: rgb(55, 0, 255);font-weight: 700;font-size: 18px;">{{model}}</a>
+                <a class="text-capitalize" href="{%url 'delete-this-model' model_name model.id %}">delete</a>
+                
+            </div>
+            {%endif%}
+            {%endfor%}
+        </div>
+        
+    </div>
+</section>
+
+{%endblock%}
+{%block script%}
+<script>
+    const active_btn = document.querySelector("button.my-btn");
+    const hideThis =document.querySelector("div.hidden-focus");
+    const showedThis = document.querySelector("div.show-focus");
+    active_btn.addEventListener("click",function(){
+        if (hideThis.classList.contains("d-none")) {
+            hideThis.classList.remove("d-none");
+            showedThis.classList.add("col-lg-7");
+            showedThis.classList.add("col-md-7");
+
+        }else{
+            hideThis.classList.add("d-none");
+            showedThis.classList.remove("col-lg-7");
+            showedThis.classList.remove("col-md-7");
+        }
+    });
+
+</script>
+{%endblock%}

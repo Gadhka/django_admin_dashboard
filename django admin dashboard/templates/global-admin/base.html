@@ -1,0 +1,97 @@
+{%load i18n static%}
+{%if has_permission == True%}
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    {%block head%} {%endblock%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'bootstrap.css'%}">
+    <link rel="stylesheet" href="{%static 'navbar.css'%}">
+    <link rel="stylesheet" href="{%static 'base.css'%}">
+    
+    <title>{%block title%} {%endblock%}</title>
+</head>
+<body>
+    <!--Navbar Start-->
+    <div class="navbar-container manager-org">
+        <nav class="navbar py-2 px-lg-5 position-relative">
+            <a href="{%url 'home'%}" class="navbar-brand d-block">
+                <h1 class="m-0 display-5 text-light">{{logo}}</h1>
+            </a>
+            <button class="navbar-button" style="padding: 4px;background: var(--dark-grey);">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="fill: rgb(255, 255, 255); width:25px;height:25px;">
+                    <path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
+                </svg>
+            </button>
+            <div class="manage-navbar "> 
+                <div class="navbar-navs justify-content-between d-flex" >
+                    <p  class="nav-item nav-link text-capitalize" style="color: var(--yellow) !important;">{%translate 'Welcome'%},
+                        <span> {%if request.user.username%}{{request.user.username}}{%else%}{{request.user.email}}{%endif%}</span>
+                    </p>
+                    <a  href="{%if view_site%}{{request.scheme}}://{%url view_site%}{%else%}{{request.scheme}}://{{request.get_host}}{%endif%}" class="nav-item nav-link services">{%translate 'ViewSite'%}</a>
+                    {%if request.user.is_authenticated == True%}
+                    <a href="{%if logout_url%} {%url logout_url%}  {%endif%}" class="nav-item nav-link text-capitalize">logout</a>
+                    {%endif%}
+                </div>
+            </div>
+         
+        </nav>
+    </div>
+    <!--End Navbar-->
+    <div class="container-fluid min-vh-100 " style="background-color: rgb(206, 205, 205);">
+        <div class="px-lg-5">
+            {%if messages%}
+            {%for message in messages%}
+            <div class="py-1 text-center text-success bg-light {{messages.tags}}">
+                {{message}}
+            </div>
+            {%endfor%}
+            {%endif%}
+            {%block body%}
+            {%endblock%}
+        </div>   
+    </div>
+
+    <script>
+        const menuIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="fill: rgb(255, 255, 255); width:25px;height:25px;">
+            <path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
+        </svg>
+        `;
+        const navbarBtn = document.querySelector(".navbar-button");
+        const navbar_manager = document.querySelector(".manage-navbar");
+        navbarBtn.addEventListener("click",function(){
+            const NewNavbar = document.querySelector(".navbar-new");
+            const navbarNavs = document.querySelector(".navbar-navs");
+            const inserbefore = document.querySelector(".navbar-navs p");
+            const insertBeforeLogo  = document.querySelector("nav.navbar")
+            if (navbar_manager.classList.contains("manage-navbar")){
+                navbar_manager.classList.add("navbar-new");
+                navbar_manager.classList.remove("manage-navbar");
+                navbarNavs.classList.add("justify-content-between");
+                navbarNavs.classList.add("d-flex");
+                navbarNavs.insertBefore(navbarBtn,inserbefore);
+                navbarBtn.classList.add("afterClick-navbar");
+                navbarBtn.innerHTML = "X";
+            } else{
+                NewNavbar.classList.add("manage-navbar");
+                NewNavbar.classList.remove("navbar-new");
+                navbarNavs.classList.remove("justify-content-between");
+                navbarNavs.classList.remove("d-flex");
+                insertBeforeLogo.insertBefore(navbarBtn,navbar_manager);
+                navbarBtn.classList.remove("afterClick-navbar");
+                navbarBtn.innerHTML = menuIcon;
+            }
+        })
+
+       
+
+       
+    </script>
+    {%block script%}{%endblock%}
+</body>
+</html>
+{%else%}
+{%translate "something is wrong please try agains"%}
+{%endif%}

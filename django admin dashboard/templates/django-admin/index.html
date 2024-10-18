@@ -1,0 +1,16 @@
+{%extends "global-admin/base.html"%}
+{%block title%}admin{%endblock%}
+{%block head%}
+{%endblock%}
+{%block body%}
+<section class="row">
+    <h1 class="h1 text-capitalize">{{site_title}}</h1>
+    <div class="col-lg-8 col-md-8 bg-light col-12 px-0 min-vh-100 bg-transparent">
+        <div class="px-1 py-2 ">
+            <a href="{%url 'home'%}" class="btn btn-success w-100 text-left">Models</a>
+        </div>
+        {%include 'global-admin/models.html' with all_models=models %}
+
+    </div>
+</section>
+{%endblock%}
